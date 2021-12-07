@@ -41,15 +41,11 @@ def mark(bingo_boards):
 def compare(index, board):
     n = len(board)
     og_board = boards[index]
-    # marked = 0
     unmarked = 0
     for row in range(n):
         for col in range(n):
             if board[row][col] == og_board[row][col]:
                 unmarked += int(og_board[row][col])
-            # else:
-            #     marked += int(og_board[row][col])
-
     return unmarked
 
 
