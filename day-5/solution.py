@@ -29,15 +29,13 @@ def part1(numbers):
         field.append([])
         for _ in range(maxy+1):
             field[r].append(0)
-            
+
     for i in range(0, len(numbers)-1, 2):
         p1 = numbers[i]
         p2 = numbers[i+1]
         if p1[0] == p2[0] or p1[1] == p2[1]:
-            print(p1, '->', p2)
             distx = abs(p2[0] - p1[0])
             disty = abs(p2[1] - p1[1])
-            print(distx, disty)
             
             if distx != 0:
                 startx = min(p1[0], p2[0])
@@ -49,7 +47,66 @@ def part1(numbers):
                 for y in range(starty, starty + disty+1):
                     field[p1[0]][y] += 1
 
-    print_field(field) 
+    total = 0
+    for row in field:
+        for col in row:
+            if col >= 2:
+                total += 1
+
+    return total
+
+def part2(numbers):
+    """Solve part 2"""
+    # find max x and max y
+    maxx, maxy = 0, 0
+    for pair in numbers:
+        if pair[0] > maxx:
+            maxx = pair[0]
+        if pair[1] > maxy:
+            maxy = pair[1]
+    
+    # make board
+    field = []
+    for r in range(maxx+1):
+        field.append([])
+        for _ in range(maxy+1):
+            field[r].append(0)
+
+    for i in range(0, len(numbers)-1, 2):
+        p1 = numbers[i]
+        p2 = numbers[i+1]
+        
+        # vertical and horizontal
+        if p1[0] == p2[0] or p1[1] == p2[1]:
+            distx = abs(p2[0] - p1[0])
+            disty = abs(p2[1] - p1[1])
+            
+            if distx != 0:
+                startx = min(p1[0], p2[0])
+                for x in range(startx, startx + distx+1):
+                    field[x][p1[1]] += 1
+
+            if disty != 0:
+                starty = min(p1[1], p2[1])
+                for y in range(starty, starty + disty+1):
+                    field[p1[0]][y] += 1
+
+        # diagonal lines
+        # case 1 - same signs
+        elif (p1[0]-p2[0] == p1[1]-p2[1]):
+            dist = abs(p1[0] - p2[0])
+            startx, starty = p1 if p1[0] < p2[0] else p2
+            for i in range(dist+1):
+                field[startx+i][starty+i] += 1
+        # case 2 - opposite signs
+        else:
+            dist = abs(p1[0] - p2[0])
+            startx, starty = p1 if p1[0] > p2[0] else p2
+            for i in range(dist+1):
+
+                field[startx-i][starty+i] += 1
+
+    #print_field(field)
 
     total = 0
     for row in field:
@@ -66,4 +123,4 @@ if __name__ == "__main__":
 
         numbers = parse(puzzle_input)
 
-        print(part1(numbers))
+        print(part2(numbers))
