@@ -20,6 +20,22 @@ def part1(numbers):
         # print(f'After {i} days: {school}')
     return len(school)
 
+def part2(numbers):
+    """Solve part 2"""
+    counts = [numbers.count(i) for i in range(9)]
+    for i in range(256):
+        # print(counts, sum(counts))
+        new_lanternfish = 0
+        for j in range(8):
+            if j == 0:
+                new_lanternfish = counts[0]
+                reset_lanternfish = counts[0]
+            counts[j] = counts[j+1]
+        counts[6] += reset_lanternfish
+        counts[8] = new_lanternfish
+        
+    return sum(counts)
+
 if __name__ == "__main__":
     for path in sys.argv[1:]:
         print(f"\n{path}:")
@@ -28,3 +44,4 @@ if __name__ == "__main__":
         numbers = parse(puzzle_input)
 
         print(part1(numbers))
+        print(part2(numbers))
